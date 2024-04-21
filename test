@@ -1,0 +1,60 @@
+from pyrogram import Client, filters
+from pyrogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.raw.types import KeyboardButtonUrl, ReplyKeyboardMarkup
+
+API_ID = '21393840'  # Wstaw tutaj swoje api_id
+API_HASH = 'e2e6b3a785e6e6e3c35d52d71e8d8b2a'  # Wstaw tutaj swój api_hash
+BOT_TOKEN = '7068265790:AAFG60mU5_JjCT7Tl-dYcPh6Q58E1SQtKh4'  # Wstaw tutaj token swojego bota
+
+app = Client("my_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+
+
+# Inline Keyboard Markup dla komendy /help
+inline_keyboard = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(text="Przycisk 1", callback_data="przycisk_1")],
+        [InlineKeyboardButton(text="Przycisk 2", callback_data="przycisk_2")],
+        [InlineKeyboardButton(text="Przycisk 3", callback_data="przycisk_3")]
+    ]
+)
+
+@app.on_callback_query()
+def handle_callback_query(client, callback_query):
+    # Odpowiada na kliknięcie przycisku
+    callback_query.answer("Kliknięto przycisk", show_alert=True)
+    
+# Reply Keyboard Markup dla komendy /start
+reply_keyboard = ReplyKeyboardMarkup(
+    [
+        [KeyboardButtonUrl(text="REGULAMIN - 📒", url="https://telegra.ph/REGULAMIN-04-14"),
+         KeyboardButtonUrl(text="ZDJĘCIA - 📸", url="https://telegra.ph/ZDJ%C4%98CIA-04-14"),
+         KeyboardButtonUrl(text="LEGIT - ✅", url="https://telegra.ph/LEGIT-04-14-2")],
+        [KeyboardButtonUrl(text="MIASTA - 🌇", url="https://www.youtube.com"),
+         KeyboardButtonUrl(text="GEOSKRYTKI - 🗺", url="https://www.reddit.com"),
+         KeyboardButtonUrl(text="InPost - ✈️", url="https://www.github.com")],
+        [KeyboardButtonUrl(text="WSPÓŁPRACA - 1️⃣", url="https://www.linkedin.com"),
+         KeyboardButtonUrl(text="WSPÓŁPRACA - 2️⃣", url="https://www.instagram.com"),
+         KeyboardButtonUrl(text="KONTAKT- 📞", url="https://www.pinterest.com")],
+    ],
+)
+
+    
+@app.on_message(filters.command("help"))
+def send_help(_, message):
+    # Wysyła wiadomość z Inline Keyboard
+    message.reply_text("Wybierz jedną z opcji:", reply_markup=inline_keyboard)
+
+@app.on_message(filters.command("start"))
+def send_welcome(_, message):
+    message.reply_text("Witaj! Wybierz jeden z przycisków.", reply_markup=reply_keyboard)
+
+app.run()  # Uruchamia bota
+
+@app.on_message(filters.command("contact"))
+async def send_contact(_, message):
+    contact_text = """
+Wybierz kontakt:
+- ODIDO: [@zloto_milczenie](https://t.me/zloto_milczenie)
+- [@ArseneW3nger](https://t.me/ArseneW3nger) ✅
+    """
+    await message.reply_text(contact_text, disable_web_page_preview=True, parse_mode="markdown")   
