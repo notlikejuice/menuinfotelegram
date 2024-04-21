@@ -1,4 +1,4 @@
 # menuinfotelegram
-# menuinfotelegram
-# menuinfotelegram
-# menuinfotelegram
+
+> pip install pyrogram
+> pip innstall tgcrytp
